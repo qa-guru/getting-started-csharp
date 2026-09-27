@@ -1,7 +1,7 @@
 using PuppeteerSharp;
 using Xunit;
 
-public class SearchTests
+public class PuppeteerSharpSearchTests
 {
     [Fact]
     public async Task SuccessfulSearchTest()
