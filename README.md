@@ -1,6 +1,6 @@
 # Getting started with C# UI tests
 
-UI test demo with [PuppeteerSharp](https://github.com/hardkoded/puppeteer-sharp): opens GitHub search, searches for `qa.guru`, asserts results contain `QA.GURU`.
+UI test demo with [Playwright](https://playwright.dev/dotnet): opens GitHub search, searches for `qa.guru`, asserts results contain `QA.GURU`.
 
 ## Run
 

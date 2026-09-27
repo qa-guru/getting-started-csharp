@@ -1,4 +1,4 @@
-using PuppeteerSharp;
+using Microsoft.Playwright;
 using Xunit;
 
 public class SearchTests
@@ -6,16 +6,18 @@ public class SearchTests
     [Fact]
     public async Task SuccessfulSearchTest()
     {
-        await new BrowserFetcher().DownloadAsync();
-        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = false });
-        await using var page = await browser.NewPageAsync();
+        Microsoft.Playwright.Program.Main(["install", "chromium"]);
 
-        await page.GoToAsync("https://github.com/search");
-        await page.TypeAsync("[aria-label='Search GitHub']", "qa.guru");
-        await page.Keyboard.PressAsync("Enter");
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new() { Headless = false });
+        var page = await browser.NewPageAsync();
 
-        var results = await page.WaitForSelectorAsync("[data-testid='results-list']");
-        var text = await results!.EvaluateFunctionAsync<string>("e => e.innerText");
-        Assert.Contains("QA.GURU", text);
+        await page.GotoAsync("https://github.com/search");
+        var search = page.Locator("[aria-label='Search GitHub']");
+        await search.FillAsync("qa.guru");
+        await search.PressAsync("Enter");
+
+        await Assertions.Expect(page.Locator("[data-testid='results-list']"))
+            .ToContainTextAsync("QA.GURU");
     }
 }
