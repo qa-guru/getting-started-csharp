@@ -1,6 +1,6 @@
 # Getting started with C# UI tests
 
-UI test demo with [PuppeteerSharp](https://github.com/hardkoded/puppeteer-sharp): opens GitHub search, searches for `qa.guru`, asserts results contain `QA.GURU`.
+UI test demo with [Selenium WebDriver](https://www.selenium.dev): opens GitHub search, searches for `qa.guru`, asserts results contain `QA.GURU`.
 
 ## Run
 
@@ -8,4 +8,3 @@ UI test demo with [PuppeteerSharp](https://github.com/hardkoded/puppeteer-sharp)
 dotnet test
 ```
 
-The test downloads a browser automatically on first run.

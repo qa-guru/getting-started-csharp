@@ -1,21 +1,20 @@
-using PuppeteerSharp;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using Xunit;
 
 public class SearchTests
 {
     [Fact]
-    public async Task SuccessfulSearchTest()
+    public void SuccessfulSearchTest()
     {
-        await new BrowserFetcher().DownloadAsync();
-        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = false });
-        await using var page = await browser.NewPageAsync();
+        using var driver = new ChromeDriver();
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-        await page.GoToAsync("https://github.com/search");
-        await page.TypeAsync("[aria-label='Search GitHub']", "qa.guru");
-        await page.Keyboard.PressAsync("Enter");
+        driver.Navigate().GoToUrl("https://github.com/search");
+        driver.FindElement(By.CssSelector("[aria-label='Search GitHub']"))
+            .SendKeys("qa.guru" + Keys.Enter);
 
-        var results = await page.WaitForSelectorAsync("[data-testid='results-list']");
-        var text = await results!.EvaluateFunctionAsync<string>("e => e.innerText");
+        var text = driver.FindElement(By.CssSelector("[data-testid='results-list']")).Text;
         Assert.Contains("QA.GURU", text);
     }
 }
